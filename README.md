@@ -35,7 +35,7 @@ $y$: yescrypt (hashing de contrasenya adaptativa modern i altament segur)
 
 Els atacs de força bruta consisteixen a provar totes les combinacions possibles donades unes condicions (conjunt de caràcters i longitud màxima). Òbviament, aquest mètode acabarà trobant la contrasenya, però el temps necessari pot arribar a ser tant llarg que sigui inviable.
 
-El segon tipus d'atacs, els de diccionari, consisteixen a provar amb una llista de paraules (diccionari) i les seves variants. Aquest mètode és molt més ràpid que el de força bruta, però només funcionarà si la contrasenya és una paraula del diccionari o una variant d'aquesta. Existeixen multitud de diccionaris disponibles a Internet, molts d'ells com "RockYou" estan formats per contrasenyes reals que han estat filtrades en algun moment. L'eina permet definir variants sobre les paraules del diccionari, com ara afegir números al final, substituir lletres per números, per augmentar les possibilitats de trobar la contrasenya. Kali ja incorpora l'arxiu de "rockyou", però podeu descarregar qualsevol altre.
+El segon tipus d'atacs, els de diccionari, consisteixen a provar amb una llista de paraules (diccionari) i les seves variants. Aquest mètode és molt més ràpid que el de força bruta, però només funcionarà si la contrasenya és una paraula del diccionari o una variant d'aquesta. Existeixen multitud de diccionaris disponibles a Internet, molts d'ells com "RockYou" estan formats per contrasenyes reals que han estat filtrades en algun moment. L'eina permet definir variants sobre les paraules del diccionari, com ara afegir números al final, substituir lletres per números, per augmentar les possibilitats de trobar la contrasenya.
 
 L'atac bàsic, consisteix a provar coses tant òbvies com contrasenyes que coincideixin amb el nom d'usuari, contrasenyes buides, etc. Pot semblar un atac molt bàsic, però en molts casos funciona.
 
@@ -57,7 +57,7 @@ El primer que caldrà fer, serà importar la màquina virtual OVA a la vostra m�
 
 A continuació, cal que instal·leu Kali Linux [2](https://www.kali.org/docs/virtualization/install-virtualbox-guest-vm/) en una màquina virtual, també amb la interfície de xarxa en "xarxa NAT".
 
-> A un escenari real, no caldria que les dues màquines estiguessin en la mateixa xarxa, es podria usar un pendrive per copiar els arxius necessaris de la màquina víctima a Kali.
+> A un escenari real, un cop tenim accés a la màquina víctima, copiaríem els dos arxius a una unitat extraïble, de manera que el procés de desxifrat de les contrasenyes el faríem al nostre equip fora de la organització.
 
 ### Accés a la màquina virtual
 
@@ -93,18 +93,15 @@ Ara ja tenim els arxius a la màquina Kali i es pot començar a preparar l'atac.
 
    - Comença pel mode bàsic
    - A continuació prova amb el mode de diccionari, usant el diccionari rockyou que Kali ja incorpora. Si no aconsegueixes res, prova amb altres diccionaris que puguis trobar a Internet.
+   - Finalment, provarem força bruta, però limitant l'espai de cerca a caràcters numèrics (0-9) i definint una longitud mínima i màxima, en aquest cas 4 a 8 dígits.
 
 Veuràs que quan hi troba un resultat te'l mostra pel terminal, i també el guarda en un fitxer anomenat `john.pot` a la carpeta de l'usuari.
 
 ### Comprovació resultats
 
-1. Mostra les contrasenyes obtingudes amb la comanda:
+1. Documenta les contrasenyes trobades i els usuaris als quals pertanyen.
 
-   ```bash
-   john --show passwords-nomcognom
-   ```
-
-2. Comprova amb algun dels usuaris que pots iniciar sessió a la màquina Ubuntu Server amb la contrasenya obtinguda.
+2. Comprova amb algun dels usuaris que pots iniciar sessió a la màquina Ubuntu Server amb la contrasenya obtinguda. Aquí estaríem simulant de l'intrusió a l'equip amb credencials d'usuaris del sistema.
 
 ## Enllaços d'interès
 
