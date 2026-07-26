@@ -1,4 +1,4 @@
-# NF1AA3 Activitat Seguretat Lògica: Cracking de contrasenyes
+# NF1AA3 Activitat Cracking de contrasenyes
 
 ## Presentació de l'activitat
 
