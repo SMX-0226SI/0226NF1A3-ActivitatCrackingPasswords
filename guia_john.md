@@ -4,7 +4,7 @@ John the Ripper és una de les eines d'auditoria de contrasenyes i Hacking Ètic
 
 ## Preparació de l'Entorn a Kali Linux**
 
-Abans d'iniciar el procés de craqueig, cal assegurar-se que els fitxers d'entrada i el diccionari estan en el format i la ubicació correctes.
+L'entorn de proves serà una màquina amb Kali Linux.
 
 ### Descompressió del diccionari RockYou
 
@@ -14,28 +14,36 @@ A Kali Linux, el diccionari rockyou.txt ve integrat per defecte, però es troba 
 sudo gzip \-d /usr/share/wordlists/rockyou.txt.gz
 ```
 
-## Execució de l'Atac de Diccionari
+### Creació del fitxer usuaris/hashes
 
-Amb el diccionari descomprimit i el fitxer de targetes/hashes a punt, s'executa l'atac indicant la ruta del diccionari i el fitxer objectiu.
+Linux usa dos arxius per gestionar els usuaris i les seves contrasenyes: `/etc/passwd` i `/etc/shadow`. Per John the Ripper, necessitem crear un arxiu que contingui únicament els noms d'usuari i els seus respectius hashes, per crear-lo:
 
-Bash  
-john \--wordlist=/usr/share/wordlists/rockyou.txt passwords.txt
+```Bash  
+sudo unshadow /etc/passwd /etc/shadow > passwords.txt
+```
 
-### Opcions d'optimització tècnica
+## Procediment de l'atac
 
-* **Autodetecció de format:** Per defecte, John the Ripper analitza la capçalera dels hashes ($6$ per a SHA-512, $1$ per a MD5, $y$ per a yescrypt, etc.) per determinar l'algorisme de xifratge.  
-* **Forçar format específic (--format):** Si es coneix l'algorisme exacte, especificar-ho redueix el temps de processament i millora el rendiment:  
-  Bash  
-  john \--format=sha512crypt \--wordlist=/usr/share/wordlists/rockyou.txt passwords.txt
+Els hashes de contrasenya es poden crear amb diversos algoritmes en funció del sistema operatiu, distribució de Linux, versió o fins i tot, preferències de l'administrador. Per defecte, John the Ripper analitza la capçalera dels hashes ($6$ per a SHA-512, $1$ per a MD5, $y$ per a yescrypt, etc.) per determinar l'algorisme de xifratge, però si es coneix l'algorisme exacte, especificar-ho redueix el temps de processament i millora el rendiment, sobretot en casos de milers de contrasenyes a desxifrar. Si volem forçar l'ús d'un algorisme concret, podem utilitzar el paràmetre `\--format`:
+
+```Bash  
+john \--format=sha512crypt passwords.txt
+```
 
 ### Atac "Single Crack" (Detectar contrasenyes evidents derivades de l'usuari)
 
 El mode **Single Crack** és la primera fase recomanada en qualsevol auditoria. No utilitza cap diccionari extern, sinó que agafa els noms d'usuari i la informació associada (com els camps del nom complet o directori de l'arxiu /etc/passwd) i hi aplica regles de permutació (*mangling rules*): majúscules/minúscules, addició de números, inversió de caràcters, etc. És un atac extremadament ràpid i molt efectiu per detectar negligències bàsiques de seguretat en els servidors
 
-#### Execució de l'atac
-
 ```Bash  
 john \--single passwords.txt
+```
+
+### Atac de Diccionari
+
+Amb el diccionari descomprimit i el fitxer de targetes/hashes a punt, s'executa l'atac indicant la ruta del diccionari i el fitxer objectiu.
+
+```Bash  
+john \--wordlist=/usr/share/wordlists/rockyou.txt passwords.txt
 ```
 
 ### Atac Numèric per Màscara / Incremental (4 a 8 dígits)

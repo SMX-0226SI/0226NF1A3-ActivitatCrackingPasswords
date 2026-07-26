@@ -2,7 +2,42 @@
 
 ## Presentació de l'activitat
 
-En aquesta activitat haureu de fer un
+La por a patir un atac informàtic és una de les principals preocupacions de qualsevol organització. La seguretat lògica és un aspecte clau per protegir la informació i els sistemes d'informació. Una de les mesures més importants per garantir la seguretat és l'ús de contrasenyes robustes i segures.
+
+Per aquest motiu, la direcció tècnica de la consultora on esteu fent la vostra estada en empresa, encarrega al departament de sistemes fer una prova real. El vostre tutor us encomana a vosaltres fer aquesta acció de pentesting que consistirà a fer entrar en un dels servidors Linux de l'organització i posteriorment, mirar d'obtenir el màxim de contrasenyes possibles dels usuaris que hi poden iniciar sessió.
+
+![cracking](media/passwords.png)
+
+Per tant, toca posar-se en mode "hacker" i arribar a desxifrar les contrasenyes dels usuaris.
+
+### Durada de l'activitat
+
+Durada aproximada: 3 hores, podeu dedicar temps addicional a la documentació i a la redacció de l'informe final.
+
+### Objectius de l'activitat
+
+Analitzar la seguretat de les contrasenyes d'un sistema Linux, comprovant la robustesa de les claus d'accés dels usuaris i la seva resistència a atacs de força bruta i de diccionari.
+
+### Competències treballades
+
+j) Elaborar documentació tècnica i administrativa del sistema, complint les normes i reglamentació del sector, per al seu manteniment i l’assistència al client.
+l) Assessorar i assistir al client, canalitzant a un nivell superior els supòsits que ho requereixin per trobar solucions adequades a les necessitats d’aquest.
+n) Mantenir un esperit constant d’innovació i actualització en l’àmbit del sector informàtic.
+
+### Resultats d'aprenentatge i criteris d'avaluació
+
+RA1. Aplica mesures de seguretat passiva en sistemes informàtics descrivint característiques d'entorns i relacionant-les amb les seves necessitats.
+
+1.1 Valora la importància de mantenir la informació segura.
+1.8 Valora la importància d'establir una política de contrasenyes.
+
+### Continguts
+
+Seguretat lògica: gestió de contrasenyes.
+
+## Introducció
+
+Abans de començar, cal repassar el format de contrasenyes en Linux i presentar l'eina "John the Ripper", que s'utilitzarà per fer l'atac de "cracking" de contrasenyes.
 
 ### Linux i les contrasenyes
 
@@ -63,7 +98,7 @@ A continuació, cal que instal·leu Kali Linux [2](https://www.kali.org/docs/vir
 
 1. Reinicia la màquina virtual Ubuntu Server i aconsegueix accedir com a root. Usa la guia que trobaràs al segon enllaç [3](https://waytoit.wordpress.com/2013/06/06/recuperando-password-en-ubuntu/) de la secció "Recursos" per aconseguir-ho.
 
-2. Comprova si el servei ssh està actiu (`systemctl status ssh`), sinó instal·la'l amb la comanda `sudo apt install ssh`.
+2. Com es tracta d'un servidor Linux al qual els usuaris hi poden accedir remotament via SSH, aquest serà el mecanisme que usarem per exfiltrar la informació crítica. Una altra opció seria copiar els arxius a una unitat extraïble.
 
 3. Copia usant la comanda `scp` els arxius `/etc/shadow` i `/etc/passwd` a la màquina Kali. Per exemple:
 
@@ -81,7 +116,7 @@ Assegura't de substituir `user` per l'usuari de Kali i `kali_ip` per la IP de la
 
 ### Cracking de les contrasenyes
 
-Ara ja tenim els arxius a la màquina Kali i es pot començar a preparar l'atac.
+Ara ja tenim els arxius a la màquina Kali i es pot començar a preparar l'atac. A l'arxiu [guia_john.md](guia_john.md) trobareu una guia pas a pas de com fer-ho amb John the Ripper.
 
 1. Convertim els dos arxius en un sol arxiu estàndard de contrasenyes amb la comanda:
 
@@ -97,11 +132,21 @@ Ara ja tenim els arxius a la màquina Kali i es pot començar a preparar l'atac.
 
 Veuràs que quan hi troba un resultat te'l mostra pel terminal, i també el guarda en un fitxer anomenat `john.pot` a la carpeta de l'usuari.
 
-### Comprovació resultats
+### Redacció de l'informe d'auditoria
 
-1. Documenta les contrasenyes trobades i els usuaris als quals pertanyen.
+1. Documenta el procediment seguit per aconseguir l'accés a la màquina víctima i la descàrrega (transferència) dels arxius necessaris per fer l'atac.
 
-2. Comprova amb algun dels usuaris que pots iniciar sessió a la màquina Ubuntu Server amb la contrasenya obtinguda. Aquí estaríem simulant de l'intrusió a l'equip amb credencials d'usuaris del sistema.
+2. Fes una relació dels usuaris i les seves contrasenyes trobades i dels usuaris als que no ha estat possible obtenir la contrasenya. Indica quins mètodes d'atac s'han fet servir per aconseguir-ho i perquè les contrasenyes trobades han estat vulnerables.
+
+3. Planteja mesures de millora de la seguretat de l'equip a nivell lògic per evitar que un atacant real pugui replicar el mateix atac i per establir una política de contrasenyes segures.
+
+### Activitat extra protegint el GRUB amb contrasenya
+
+Si acabes abans de temps, se't proposa una activitat extra de millora de la seguretat de la màquina víctima. Consisteix a protegir el GRUB amb contrasenya, de manera que un atacant no pugui accedir a la màquina com a root i copiar-se els arxius necessaris per fer l'atac.
+
+Documenta el procediment per fortificar l'accés al GRUB de manera que qualsevol intent d'accedir a les opcions d'arrencada del sistema requereixi una contrasenya. Pots utilitzar la guia que trobaràs a l'enllaç [4](https://soloconlinux.org.es/securizando-grub/).
+
+Aquesta part no és obligatòria i **només es pot fer a classe** cas que **hagis acabat abans l'activitat**. La seva valoració serà de 0 a 1 punt addicional a la nota final de la unitat.
 
 ## Enllaços d'interès
 
@@ -112,3 +157,5 @@ Veuràs que quan hi troba un resultat te'l mostra pel terminal, i també el guar
 3.[WaytoIT Blog: Recuperando password en Ubuntu](https://waytoit.wordpress.com/2013/06/06/recuperando-password-en-ubuntu/)
 
 4.[SoloConLinux: Securizando GRUB](https://soloconlinux.org.es/securizando-grub/)
+
+5.[John the Ripper: Official Documentation](https://www.openwall.com/john/doc/)
